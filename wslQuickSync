@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+#  This script allows you to quickly copy a file from a specified file path in Windows to your home directory in WSL
+#  Additionally, it archives the previously synced versions of the file (files with same name) with a timestamp appended to name.
+#  Use case:  Qucikly copying bash script revisions between Windows and WSL while creating an archive of previous versions.
+
+#  Prompt user for file name
+echo "Please enter the name of the file you would like to sync:
+read fileName
+
+
+cd ~
+FILE=~/$fileName
+if [ -f "$FILE" ]; then
+    current_time=$(date "+%Y.%m.%d-%H.%M.%S")
+    mv ~/$fileName ~/syncHistory/$fileName.$current_time.txt
+    echo "Previously pulled file has been archived."
+fi
+
+
+#  Change directory to sync folder
+#  Edit file path on line 22 as-needed for your sync directory
+cd /mnt/C/Users/user.name/Documents/SyncBox
+
+# Copy the specified file to home directory in WSL
+cp $fileName ~
+
+echo "The file has been synced from Windows to WSL."
+echo ""
